@@ -2,10 +2,25 @@ package com.example.course.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;//Especificacao
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+//como ira converter os objetos para um modelo relacional->annotations(@Entity):
+
+
+
 //Serializable -> para ser tranformado em cadeias de byte (p/ serem trafegados na rede, gravados em arquivos e etc..)
+
+@Entity
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L; // numero de serie padrao
+	
+	//Chave primaria @id em cima do atributo
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
 	private Long id;
 	private String name;
 	private String email;
