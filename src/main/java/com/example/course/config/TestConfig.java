@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Profile;
 
 import com.example.course.entities.User;
 import com.example.course.repositories.UserRepository;
-import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+
 
 
 //database seeding (popular o banco de dados)
