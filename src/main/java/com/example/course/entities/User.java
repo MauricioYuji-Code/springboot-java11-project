@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 //como ira converter os objetos para um modelo relacional->annotations(@Entity):
 
 
@@ -32,6 +34,7 @@ public class User implements Serializable {
 	private String phone;
 	private String password;
 	
+	@JsonIgnore //para nao gerar loops por conta a "via de mao dupla" entre 2 classes relacionadas
 	@OneToMany(mappedBy = "client") //um para muitos e esta mapeado a partir da varial cliente
 	private List <Order> orders = new ArrayList<Order>();
 
