@@ -1,11 +1,15 @@
 package com.example.course.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;//Especificacao
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 //como ira converter os objetos para um modelo relacional->annotations(@Entity):
 
@@ -14,6 +18,7 @@ import javax.persistence.Id;
 //Serializable -> para ser tranformado em cadeias de byte (p/ serem trafegados na rede, gravados em arquivos e etc..)
 
 @Entity
+@Table(name = "tb_user") // nome da tabela
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L; // numero de serie padrao
@@ -26,6 +31,9 @@ public class User implements Serializable {
 	private String email;
 	private String phone;
 	private String password;
+	
+	@OneToMany(mappedBy = "client") //um para muitos e esta mapeado a partir da varial cliente
+	private List <Order> orders = new ArrayList<Order>();
 
 	public User() {
 
@@ -79,6 +87,10 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public List <Order> getOrders() {
+		return orders;
+	}
 
 	@Override
 	public int hashCode() {
@@ -104,6 +116,8 @@ public class User implements Serializable {
 			return false;
 		return true;
 	}
+
+
 
 	
 	
