@@ -8,6 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -25,7 +28,12 @@ public class Product implements Serializable {
 	private String imgUrl;
 
 	// o produto não pode ter a mesma categoria mais de uma vez, por isso se usa set
-	@Transient
+	
+	//mapeamento
+	@ManyToMany
+	@JoinTable(name = "tb_product_category", 
+	joinColumns = @JoinColumn(name = "product_id"), //chave estrangeira (para tabela de associacao)
+	inverseJoinColumns = @JoinColumn(name = "category_id")) //chave estrangeira (para tabela de associacao)
 	private Set<Category> categories = new HashSet<Category>();
 
 	public Product() {
