@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 //Serializable -> para ser tranformado em cadeias de byte (p/ serem trafegados na rede, gravados em arquivos e etc..)
 
+//mapeamento JPA
 @Entity
 @Table(name = "tb_user") // nome da tabela
 public class User implements Serializable {
