@@ -11,8 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_product") // nome da tabela
@@ -28,13 +30,16 @@ public class Product implements Serializable {
 	private String imgUrl;
 
 	// o produto não pode ter a mesma categoria mais de uma vez, por isso se usa set
-	
-	//mapeamento
+
+	// mapeamento
 	@ManyToMany
-	@JoinTable(name = "tb_product_category", 
-	joinColumns = @JoinColumn(name = "product_id"), //chave estrangeira (para tabela de associacao)
-	inverseJoinColumns = @JoinColumn(name = "category_id")) //chave estrangeira (para tabela de associacao)
+	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), // chave estrangeira (para
+																								// tabela de associacao)
+			inverseJoinColumns = @JoinColumn(name = "category_id")) // chave estrangeira (para tabela de associacao)
 	private Set<Category> categories = new HashSet<Category>();
+
+	@OneToMany(mappedBy = "id.product")
+	private Set<OrderItem> items = new HashSet<OrderItem>();
 
 	public Product() {
 
@@ -91,6 +96,18 @@ public class Product implements Serializable {
 
 	public Set<Category> getCategories() {
 		return categories;
+	}
+
+	@JsonIgnore
+	public Set<Order> getOrders() {
+
+		Set<Order> set = new HashSet<Order>();
+		for (OrderItem x : items) {
+			set.add(x.getOrder());
+		}
+
+		return set;
+
 	}
 
 	@Override
