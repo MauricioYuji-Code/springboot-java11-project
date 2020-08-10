@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.course.entities.User;
 import com.example.course.repositories.UserRepository;
+import com.example.course.services.exception.ResourceNotFoundException;
 
 
 //camada de serviços (intermediario entre a controler e o repositorio)
@@ -26,7 +27,9 @@ public class UserService {
 		//va diretamento ao banco de dados
 		Optional<User> obj = repository.findById(id);
 		
-		return obj.get();
+		//return obj.get();
+		//ira verificar se o id existe, caso não consiga, sera projetada a excessao personalizada
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 		
 	}
 	//retorna os usuarios salvos 
