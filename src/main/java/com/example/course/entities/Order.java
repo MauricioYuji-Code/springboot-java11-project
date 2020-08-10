@@ -31,17 +31,17 @@ public class Order implements Serializable {
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;
-	
+
 	private Integer orderStatus;
 
 	// @JsonIgnore
 	@ManyToOne // chave estrangeira muitos para um
 	@JoinColumn(name = "cliente_id") // chave estrangeira (nome da coluna)
 	private User client;
-	
+
 	@OneToMany(mappedBy = "id.order")
 	private Set<OrderItem> items = new HashSet<OrderItem>();
-	
+
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
 	private Payment payment;
 
@@ -70,10 +70,10 @@ public class Order implements Serializable {
 		return moment;
 	}
 
-	public Set<OrderItem> getItems(){
+	public Set<OrderItem> getItems() {
 		return items;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -82,13 +82,22 @@ public class Order implements Serializable {
 		return result;
 	}
 
-		
 	public Payment getPayment() {
 		return payment;
 	}
 
 	public void setPayment(Payment payment) {
 		this.payment = payment;
+	}
+
+	public Double getTotal() {
+		double sum = 0.0;
+
+		for (OrderItem x : items) {
+			sum = sum + x.getSubTotal();
+		}
+
+		return sum;
 	}
 
 	@Override
