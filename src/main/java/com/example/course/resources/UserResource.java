@@ -1,13 +1,19 @@
 package com.example.course.resources;
 
+import java.net.URI;
 import java.util.List;
+
+import javax.servlet.Servlet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.course.entities.User;
 import com.example.course.services.UserService;
@@ -23,30 +29,36 @@ public class UserResource {
 	// end point para acessar os usuarios
 
 	// retornar respostas de requisicoes web
-		
-	
-	//responde o tipo get do http (GetMapping)
-	
-	
+
+	// responde o tipo get do http (GetMapping)
+
 	@GetMapping
 	public ResponseEntity<List<User>> findAll() {
 
-		//User u = new User(1L, "Maria", "maria@gmail.com", "99999999", "12345");
+		// User u = new User(1L, "Maria", "maria@gmail.com", "99999999", "12345");
 		List<User> list = service.findAll();
 		// ok -> para retornar caso a funcao funcione com sucesso
 		// body -> corpo da resposta do usuario "u"
-		
-		
 
 		return ResponseEntity.ok().body(list);
 
 	}
-	
-	//Parametro -> value = "/{id}" para ser alocado na url e realizar a busca pelo id
+
+	// Parametro -> value = "/{id}" para ser alocado na url e realizar a busca pelo
+	// id
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<User> findNyId(@PathVariable Long id){
+	public ResponseEntity<User> findNyId(@PathVariable Long id) {
 		User obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
+	}
+
+	@PostMapping
+	public ResponseEntity<User> insert(@RequestBody User obj) {
+		
+		obj = service.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).body(obj);
 	}
 
 }
