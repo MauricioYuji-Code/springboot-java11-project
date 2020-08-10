@@ -23,7 +23,7 @@ public class UserService {
 	}
 	
 	public User findById(Long id) {
-		
+		//va diretamento ao banco de dados
 		Optional<User> obj = repository.findById(id);
 		
 		return obj.get();
@@ -37,6 +37,20 @@ public class UserService {
 	
 	public void delete (Long id) {
 		repository.deleteById(id);
+	}
+	
+	public User update(Long id, User obj) {
+		//intancia usuario, ira deixar o objeto monitorado pelo jpa
+		User entity = repository.getOne(id);
+		updateData(entity, obj);
+		return repository.save(entity);
+	}
+
+	private void updateData(User entity, User obj) {
+		entity.setName(obj.getName());
+		entity.setEmail(obj.getEmail());
+		entity.setPhone(obj.getPhone());
+		
 	}
 
 }
